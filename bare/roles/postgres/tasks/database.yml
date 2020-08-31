@@ -1,3 +1,6 @@
+- name: Fix encoding
+  include: fix_encoding.yml
+
 - name: Create database {{ mastodon_db }}
   postgresql_db:
     name: "{{ mastodon_db }}"

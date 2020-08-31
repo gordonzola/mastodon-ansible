@@ -8,6 +8,7 @@ User=mastodon
 WorkingDirectory={{ mastodon_home }}/{{ mastodon_path }}
 Environment="NODE_ENV=production"
 Environment="PORT=4000"
+Environment="BIND=0.0.0.0"
 ExecStart=/usr/bin/npm run start
 TimeoutSec=15
 Restart=always
