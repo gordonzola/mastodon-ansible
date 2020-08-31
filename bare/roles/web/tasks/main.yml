@@ -8,6 +8,7 @@
   become: true
   tags:
     - firewall
+  when: "disable_ufw == 'false'"
 - include: user.yml
   become: true
 - include: ruby.yml
@@ -20,5 +21,7 @@
   become: true
   tags:
     - letsencrypt 
+  when: "disable_letsencrypt == 'false' and disable_nginx == 'false'"
 - include: nginx.yml
   become: true
+  when: "disable_nginx == 'false'"

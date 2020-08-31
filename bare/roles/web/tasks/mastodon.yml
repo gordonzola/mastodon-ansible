@@ -1,6 +1,6 @@
 - name: Clone mastodon
   git:
-    repo: "https://github.com/tootsuite/mastodon.git"
+    repo: "{{ mastodon_repo }}"
     dest: "{{ mastodon_home }}/{{mastodon_path}}"
     clone: true
 
@@ -18,6 +18,8 @@
 "
   args:
     chdir: "{{ mastodon_home }}/{{ mastodon_path }}"
+  environment:
+    RBENV_VERSION: "{{ ruby_version }}"
 
 - name: Yarn install
   command: yarn install --pure-lockfile
@@ -55,17 +57,30 @@
 - stat: path={{ mastodon_home }}/{{ mastodon_path }}/.env.production
   register: production_config
 
+- name: Install production env file
+  template:
+    src: templates/env.production.j2
+    dest: "{{ mastodon_home }}/{{ mastodon_path }}/.env.production"
+
+- name: Create database
+  shell: "RAILS_ENV=production ~/.rbenv/shims/bundle exec rails db:setup"
+  args:
+    chdir: "{{ mastodon_home }}/{{ mastodon_path }}"
+  environment:
+    SAFETY_ASSURED: 1
+  when: not production_config.stat.exists
+
 - name: Migrate database
   shell: "RAILS_ENV=production ~/.rbenv/shims/bundle exec rails db:migrate"
   args:
     chdir: "{{ mastodon_home }}/{{ mastodon_path }}"
-  when: production_config.stat.exists
+  # when: production_config.stat.exists
 
 - name: Precompile assets
   shell: "RAILS_ENV=production ~/.rbenv/shims/bundle exec rails assets:precompile"
   args:
     chdir: "{{ mastodon_home }}/{{ mastodon_path }}"
-  when: production_config.stat.exists
+  # when: production_config.stat.exists
 
 - name: Enable mastodon-web
   command: systemctl enable mastodon-web.service
@@ -84,18 +99,18 @@
 
 - name: Restart mastodon-web
   command: systemctl restart mastodon-web.service
-  when: production_config.stat.exists
+  # when: production_config.stat.exists
   become: true
   become_user: root
 
 - name: Restart mastodon-streaming
   command: systemctl restart mastodon-streaming.service
-  when: production_config.stat.exists
+  # when: production_config.stat.exists
   become: true
   become_user: root
 
 - name: Restart mastodon-sidekiq
   command: systemctl restart mastodon-sidekiq.service
-  when: production_config.stat.exists
+  # when: production_config.stat.exists
   become: true
   become_user: root

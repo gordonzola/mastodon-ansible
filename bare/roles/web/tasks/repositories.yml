@@ -6,6 +6,7 @@
   with_items:
     - package: apt-transport-https
     - package: ca-certificates
+    - package: gnupg
 
 - name: Install APT repository keys
   apt_key: id={{ item.id }} url={{ item.url }} state=present
