@@ -1,4 +1,4 @@
-ubuntu_codename: "bionic"
+ubuntu_codename: "focal"
 mastodon_db_login_unix_socket: '/var/run/postgresql'
 
 packages:

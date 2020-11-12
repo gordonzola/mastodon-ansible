@@ -9,8 +9,8 @@
     install_recommends: no
   with_items: "{{ packages }}"
 
-- name: nodejs alternative
-  alternatives:
-    name: node
-    link: /usr/bin/node
-    path: /usr/bin/nodejs
+# - name: nodejs alternative
+#   alternatives:
+#     name: node
+#     link: /usr/bin/node
+#     path: /usr/bin/nodejs
