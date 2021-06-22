@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 set :os, family: :ubuntu
@@ -20,7 +22,7 @@ describe 'Ansible Debian target' do
     end
 
     describe command('ruby -v') do
-      its(:stdout) { should match(/2\.6\.6/) }
+      its(:stdout) { should match(/2\.7\.2/) }
     end
 
     describe file('/usr/bin/nodejs') do
@@ -71,7 +73,7 @@ describe 'Ansible Debian target' do
     end
 
     describe command('ruby-build --version') do
-      its(:stdout) { should match(/ruby-build 20200401/) }
+      its(:stdout) { should match(/ruby-build 20210405/) }
     end
 
     describe file('/home/mastodon/live') do
@@ -118,12 +120,12 @@ describe 'Ansible Debian target' do
         its(:content) { should match(/Status: active/) }
 
         expected_rules = [
-          %r{22\/tcp \s* ALLOW \s* Anywhere},
-          %r{80\/tcp \s* ALLOW \s* Anywhere},
-          %r{443\/tcp \s* ALLOW \s* Anywhere},
-          %r{22\/tcp \(v6\) \s* ALLOW \s* Anywhere \(v6\)},
-          %r{80\/tcp \(v6\) \s* ALLOW \s* Anywhere \(v6\)},
-          %r{443\/tcp \(v6\) \s* ALLOW  \s* Anywhere \(v6\)}
+          %r{22/tcp \s* ALLOW \s* Anywhere},
+          %r{80/tcp \s* ALLOW \s* Anywhere},
+          %r{443/tcp \s* ALLOW \s* Anywhere},
+          %r{22/tcp \(v6\) \s* ALLOW \s* Anywhere \(v6\)},
+          %r{80/tcp \(v6\) \s* ALLOW \s* Anywhere \(v6\)},
+          %r{443/tcp \(v6\) \s* ALLOW  \s* Anywhere \(v6\)}
         ]
 
         expected_rules.each do |r|
